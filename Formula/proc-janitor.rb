@@ -2,7 +2,7 @@ class ProcJanitor < Formula
   desc "Automatic orphan process cleanup daemon for macOS"
   homepage "https://github.com/jhlee0409/proc-janitor"
   license "MIT"
-  version "0.8.0"
+  version "0.8.1"
 
   on_macos do
     if Hardware::CPU.arm?
