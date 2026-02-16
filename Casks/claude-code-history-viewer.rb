@@ -9,6 +9,8 @@ cask "claude-code-history-viewer" do
   desc "Browse and analyze Claude Code conversation history offline"
   homepage "https://github.com/jhlee0409/claude-code-history-viewer"
 
+  auto_updates true
+
   livecheck do
     url :url
     strategy :github_latest
