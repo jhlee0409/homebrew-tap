@@ -14,8 +14,6 @@ cask "claude-code-history-viewer" do
     strategy :github_latest
   end
 
-  depends_on macos: ">= :high_sierra"
-
   app "Claude Code History Viewer.app"
 
   zap trash: [
