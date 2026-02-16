@@ -1,0 +1,26 @@
+name: Update Cask
+
+on:
+  repository_dispatch:
+    types: [update-cask]
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Update cask version and sha256
+        run: |
+          VERSION="${{ github.event.client_payload.version }}"
+          SHA256="${{ github.event.client_payload.dmg_sha256 }}"
+          sed -i "s/version \".*\"/version \"${VERSION}\"/" Casks/claude-code-history-viewer.rb
+          sed -i "s/sha256 \".*\"/sha256 \"${SHA256}\"/" Casks/claude-code-history-viewer.rb
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add Casks/claude-code-history-viewer.rb
+          git commit -m "chore: update claude-code-history-viewer to v${{ github.event.client_payload.version }}"
+          git push
