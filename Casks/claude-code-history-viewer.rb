@@ -1,6 +1,6 @@
 cask "claude-code-history-viewer" do
-  version "1.22.0"
-  sha256 "2109f211f18ace2b05fad21331b53bb51e6bc5d5a587f64845c9b08da3439963"
+  version "1.23.0"
+  sha256 "c17cebfa7d02b53a88c8a19bd55a7128fc5dff788efca0adf32ccd5b0fa11170"
 
   url "https://github.com/jhlee0409/claude-code-history-viewer/releases/download/v#{version}/Claude.Code.History.Viewer_#{version}_universal.dmg",
       verified: "github.com/jhlee0409/claude-code-history-viewer/"
