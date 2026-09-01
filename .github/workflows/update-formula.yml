@@ -1,0 +1,125 @@
+name: Update proc-janitor formula
+
+# Pull, not push.
+#
+# The source repo's release workflow used to push this formula, which needs a
+# cross-repo token (HOMEBREW_TAP_TOKEN). That token expired and the job failed on
+# every release from v0.8.3 through v0.10.1 — five in a row — while the rest of
+# the release stayed green, so nobody noticed and the formula had to be updated by
+# hand each time.
+#
+# Reading the release from here instead needs no secret at all: GITHUB_TOKEN is
+# scoped to this repository and never expires. It is also self-healing — if one
+# run fails or a release is missed, the next scheduled run picks it up.
+on:
+  schedule:
+    # Daily. `workflow_dispatch` is the fast path right after a release:
+    #   gh workflow run update-formula.yml -R jhlee0409/homebrew-tap
+    - cron: "17 4 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Resolve the latest release
+        id: release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          tag=$(gh api repos/jhlee0409/proc-janitor/releases/latest --jq .tag_name)
+          version="${tag#v}"
+          current=$(sed -n 's/^[[:space:]]*version "\(.*\)"/\1/p' Formula/proc-janitor.rb | head -1)
+          echo "tag=$tag"          >> "$GITHUB_OUTPUT"
+          echo "version=$version"  >> "$GITHUB_OUTPUT"
+          echo "current=$current"  >> "$GITHUB_OUTPUT"
+          if [ "$version" = "$current" ]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "Formula already at $version."
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "Updating $current -> $version."
+          fi
+
+      - name: Fetch published checksums
+        if: steps.release.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ steps.release.outputs.tag }}
+        run: |
+          set -euo pipefail
+          mkdir -p sums
+          gh release download "$TAG" --repo jhlee0409/proc-janitor \
+            --pattern '*.sha256' --dir sums
+          # A partial release must not produce a half-updated formula.
+          for target in aarch64-apple-darwin x86_64-apple-darwin \
+                        aarch64-unknown-linux-gnu x86_64-unknown-linux-gnu; do
+            f="sums/proc-janitor-${TAG}-${target}.tar.gz.sha256"
+            [ -s "$f" ] || { echo "::error::missing checksum for $target"; exit 1; }
+          done
+
+      - name: Rewrite version and checksums
+        if: steps.release.outputs.changed == 'true'
+        env:
+          TAG: ${{ steps.release.outputs.tag }}
+          VERSION: ${{ steps.release.outputs.version }}
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import os, re, glob
+          tag, version = os.environ["TAG"], os.environ["VERSION"]
+
+          sha = {}
+          for path in glob.glob("sums/*.sha256"):
+              target = re.search(rf"{re.escape(tag)}-(.+)\.tar\.gz\.sha256$", path).group(1)
+              sha[target] = open(path).read().split()[0]
+
+          # Edited in place rather than regenerated from a template: only the
+          # version and the four checksums change per release, so the formula's
+          # own structure (service block, test block, anything added later) is
+          # preserved instead of being silently reverted.
+          path = "Formula/proc-janitor.rb"
+          pending, out = None, []
+          for line in open(path).read().split("\n"):
+              if re.match(r'^\s*version "', line):
+                  line = re.sub(r'"[^"]*"', f'"{version}"', line)
+              m = re.search(r"proc-janitor-v#\{version\}-([a-z0-9_-]+)\.tar\.gz", line)
+              if m:
+                  pending = m.group(1)
+              elif pending and re.match(r'^\s*sha256 "', line):
+                  line = re.sub(r'"[^"]*"', f'"{sha[pending]}"', line)
+                  pending = None
+              out.append(line)
+          open(path, "w").write("\n".join(out))
+
+          missing = [t for t in sha if f'"{sha[t]}"' not in open(path).read()]
+          if missing:
+              raise SystemExit(f"checksums not applied: {missing}")
+          PY
+          rm -rf sums
+
+      - name: Check the formula still parses
+        if: steps.release.outputs.changed == 'true'
+        run: ruby -c Formula/proc-janitor.rb
+
+      - name: Commit
+        if: steps.release.outputs.changed == 'true'
+        env:
+          VERSION: ${{ steps.release.outputs.version }}
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add Formula/proc-janitor.rb
+          if git diff --cached --quiet; then
+            echo "Nothing to commit."
+            exit 0
+          fi
+          git commit -m "chore: update proc-janitor to ${VERSION}"
+          git push
