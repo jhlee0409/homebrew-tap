@@ -2,25 +2,25 @@ class ProcJanitor < Formula
   desc "Automatic orphan process cleanup daemon for macOS"
   homepage "https://github.com/jhlee0409/proc-janitor"
   license "MIT"
-  version "0.9.1"
+  version "0.10.0"
 
   on_macos do
     if Hardware::CPU.arm?
       url "https://github.com/jhlee0409/proc-janitor/releases/download/v#{version}/proc-janitor-v#{version}-aarch64-apple-darwin.tar.gz"
-      sha256 "32542f5b51e9d5400e259d2786c305419f8c5bd622feadc2b50d7eaba60efd81"
+      sha256 "dbfcc8e7e4e4ad1eff4c5f5fd8130052c0040738ff2eae7ef9e01e11bf4b87e9"
     else
       url "https://github.com/jhlee0409/proc-janitor/releases/download/v#{version}/proc-janitor-v#{version}-x86_64-apple-darwin.tar.gz"
-      sha256 "1ae9fb7e8ea0c02eba47c172066be369ad6f8773b16d49197ee7a85ac7276d30"
+      sha256 "e6781b60bffcf2bdef4b320cb4da0cfef08a3feeaec3b7fbd34fb02638e770f7"
     end
   end
 
   on_linux do
     if Hardware::CPU.arm?
       url "https://github.com/jhlee0409/proc-janitor/releases/download/v#{version}/proc-janitor-v#{version}-aarch64-unknown-linux-gnu.tar.gz"
-      sha256 "0d0d77ca88bd5e60d68884869ee892390ef21187ba7fa55057d7fc0a6645077e"
+      sha256 "ae140a7e51b0fb7391286d1a63669490e63a64b47584d9973aa6e2dcbe261364"
     else
       url "https://github.com/jhlee0409/proc-janitor/releases/download/v#{version}/proc-janitor-v#{version}-x86_64-unknown-linux-gnu.tar.gz"
-      sha256 "0148426a96f148a5ab59defd353ef82638f6f144ae728a16f62fef9c47aae763"
+      sha256 "44223b4f54c4855c8c24cc3c56c2dbfd52179d30e8473caf8cd19ef12a216903"
     end
   end
 
