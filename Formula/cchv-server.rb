@@ -2,25 +2,25 @@ class CchvServer < Formula
   desc "Claude Code History Viewer - WebUI Server (headless HTTP server)"
   homepage "https://github.com/jhlee0409/claude-code-history-viewer"
   license "MIT"
-  version "1.30.0"
+  version "1.31.0"
 
   on_macos do
     if Hardware::CPU.arm?
       url "https://github.com/jhlee0409/claude-code-history-viewer/releases/download/v#{version}/cchv-server-macos-arm64.tar.gz"
-      sha256 "c88228c662d4e03ba07cabe0f8acac04fce29a0329eb4a8bece52c14f50cac53"
+      sha256 "10017567d6c25132d358175ca7e62ebf6a1533ae9c1d016a4f621f630217e932"
     else
       url "https://github.com/jhlee0409/claude-code-history-viewer/releases/download/v#{version}/cchv-server-macos-x64.tar.gz"
-      sha256 "cb6eedd7b579b09a8708e895f67341613ffe70738766183d61da7e93e55c3388"
+      sha256 "5d8cb56368c919e36e507aa8685f15681b7f4bb8828e150e480665860bc48af5"
     end
   end
 
   on_linux do
     if Hardware::CPU.arm?
       url "https://github.com/jhlee0409/claude-code-history-viewer/releases/download/v#{version}/cchv-server-linux-arm64.tar.gz"
-      sha256 "3f486ce17a9dfc6c9dff08dbd089b4e0a2dbba6dab2a74e4249aff98239549ad"
+      sha256 "b807f4cf3f9c0548b2de8226f3ec8b6ced5b274836be98e2ce124ead56dd3f1d"
     else
       url "https://github.com/jhlee0409/claude-code-history-viewer/releases/download/v#{version}/cchv-server-linux-x64.tar.gz"
-      sha256 "e4ca59de4843fa1ae1f4bcdbd23b23b1aa9b2922945c2a14034243f45f50da8f"
+      sha256 "fe61ebc28d73df5a95bb7de3b1cd45fd88510789cda48ef8b7f99c31812d53a3"
     end
   end
 
