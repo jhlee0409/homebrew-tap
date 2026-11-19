@@ -1,6 +1,6 @@
 cask "omnilogue" do
-  version "1.32.2"
-  sha256 "2b2264412a9675251d884ae165bc92fe58fc10de0440110973216aad70a60756"
+  version "2.0.0"
+  sha256 "b22164b1fdeda5b1520f3db1972bcd27bd5e88d9bf90f2ac69abcb5560568630"
 
   url "https://github.com/jhlee0409/omnilogue/releases/download/v#{version}/Claude.Code.History.Viewer_#{version}_universal.dmg"
 
