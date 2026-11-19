@@ -4,22 +4,22 @@ Custom Homebrew tap for jhlee0409 projects.
 
 ## Packages
 
-### Claude Code History Viewer (Cask)
+### Omnilogue (Cask)
 
-Browse and analyze Claude Code conversation history offline.
+Browse and analyze AI coding assistant history offline.
 
 ```bash
 brew tap jhlee0409/tap
-brew install --cask claude-code-history-viewer
+brew install --cask omnilogue
 ```
 
 To upgrade:
 
 ```bash
-brew upgrade --cask claude-code-history-viewer
+brew upgrade --cask omnilogue
 ```
 
-- [Claude Code History Viewer on GitHub](https://github.com/jhlee0409/claude-code-history-viewer)
+- [Omnilogue on GitHub](https://github.com/jhlee0409/omnilogue)
 
 ### proc-janitor (Formula)
 

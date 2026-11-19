@@ -1,12 +1,12 @@
-cask "claude-code-history-viewer" do
+cask "omnilogue" do
   version "1.32.2"
   sha256 "2b2264412a9675251d884ae165bc92fe58fc10de0440110973216aad70a60756"
 
-  url "https://github.com/jhlee0409/claude-code-history-viewer/releases/download/v#{version}/Claude.Code.History.Viewer_#{version}_universal.dmg"
+  url "https://github.com/jhlee0409/omnilogue/releases/download/v#{version}/Claude.Code.History.Viewer_#{version}_universal.dmg"
 
-  name "Claude Code History Viewer"
-  desc "Browse and analyze Claude Code conversation history offline"
-  homepage "https://github.com/jhlee0409/claude-code-history-viewer"
+  name "Omnilogue"
+  desc "Browse and analyze AI coding assistant history offline"
+  homepage "https://github.com/jhlee0409/omnilogue"
 
   auto_updates true
 
