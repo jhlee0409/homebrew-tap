@@ -4,25 +4,25 @@ class CchvServer < Formula
   desc "Omnilogue WebUI server"
   homepage "https://github.com/jhlee0409/omnilogue"
   license "MIT"
-  version "2.2.0"
+  version "2.2.1"
 
   on_macos do
     if Hardware::CPU.arm?
       url "https://github.com/jhlee0409/omnilogue/releases/download/v#{version}/cchv-server-macos-arm64.tar.gz"
-      sha256 "ce21db31cb771bfeebdac5d34555ea8bae60131428d896e8e66e8c56ef98bd0c"
+      sha256 "970b1138cd5b59a68921e6c6c604af2a511694ff9e1f77e560614615d184a3bb"
     else
       url "https://github.com/jhlee0409/omnilogue/releases/download/v#{version}/cchv-server-macos-x64.tar.gz"
-      sha256 "b9a73987e7da7f1c0e1a457af293cc7146f2740ed1aaadd1bbcf9937ef68da22"
+      sha256 "7b8b35fe1f86fecad4b64c2c98a0490e0fd28e1836cb5ea4b6ce982f0ce7d72b"
     end
   end
 
   on_linux do
     if Hardware::CPU.arm?
       url "https://github.com/jhlee0409/omnilogue/releases/download/v#{version}/cchv-server-linux-arm64.tar.gz"
-      sha256 "32df9b032e181cb08b4f7172c9ea693a3df97913130f29f04831bd5cdb858956"
+      sha256 "4dfc58ef1967cecb9bffdb239ebe491429fbcf4d960b4dbf3caa0276f6ad878a"
     else
       url "https://github.com/jhlee0409/omnilogue/releases/download/v#{version}/cchv-server-linux-x64.tar.gz"
-      sha256 "3788f6c066012b36ec5974e1c0b7981bfc10b02593c8bb8c49ce329f653231de"
+      sha256 "b00f42a1a587be975af960edba3fb2f3ab4bdbc7e80d5667934d5504c3c3261a"
     end
   end
 
